@@ -1,0 +1,96 @@
+{
+  "words": [
+    {
+      "id": "w_1",
+      "term": "accommodate",
+      "definition": "수용하다, 숙박시키다, (요구 등을) 들어주다",
+      "example": "The hotel can accommodate up to 500 guests.",
+      "ipa": "/əˈkɑː.mə.deɪt/",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "w_2",
+      "term": "implement",
+      "definition": "시행하다, 이행하다",
+      "example": "We need to implement the new safety regulations immediately.",
+      "ipa": "/ˈɪm.plə.ment/",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "w_3",
+      "term": "reservation",
+      "definition": "예약, 유보/의구심",
+      "example": "I made a reservation for two at the restaurant.",
+      "ipa": "/ˌrez.əˈveɪ.ʃən/",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "w_4",
+      "term": "notification",
+      "definition": "통지, 알림",
+      "example": "You will receive a notification via email.",
+      "ipa": "/ˌnoʊ.t̬ə.fəˈkeɪ.ʃən/",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "w_5",
+      "term": "contribute",
+      "definition": "기여하다, 공헌하다",
+      "example": "Many employees contributed to the project's success.",
+      "ipa": "/kənˈtrɪb.juːt/",
+      "status": "new",
+      "nextReviewDate": null
+    }
+  ],
+  "sentences": [
+    {
+      "id": "s_1",
+      "pattern": "I'm kind of...",
+      "original": "I'm kind of nervous about the interview.",
+      "translation": "나 면접 때문에 좀 긴장돼.",
+      "situation": "중요한 일을 앞두고 약간 긴장됨을 표현할 때",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "s_2",
+      "pattern": "I'm kind of...",
+      "original": "I'm kind of hungry.",
+      "translation": "나 좀 배고파.",
+      "situation": "약간 배가 고프다고 말할 때",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "s_3",
+      "pattern": "Do you feel like...",
+      "original": "Do you feel like going for a walk?",
+      "translation": "산책 좀 하러 갈래?",
+      "situation": "상대방에게 무엇을 하고 싶은지 부드럽게 물어볼 때",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "s_4",
+      "pattern": "I'm here to...",
+      "original": "I'm here to see Mr. Kim.",
+      "translation": "김 선생님을 뵈러 왔습니다.",
+      "situation": "방문 목적을 밝힐 때",
+      "status": "new",
+      "nextReviewDate": null
+    },
+    {
+      "id": "s_5",
+      "pattern": "Are you ready to...",
+      "original": "Are you ready to order?",
+      "translation": "주문하시겠습니까?",
+      "situation": "식당에서 주문을 받을 준비가 되었는지 물을 때",
+      "status": "new",
+      "nextReviewDate": null
+    }
+  ]
+}
