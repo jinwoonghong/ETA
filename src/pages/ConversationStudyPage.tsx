@@ -64,13 +64,16 @@ export const ConversationStudyPage = () => {
         setExpandedIds(newSet);
     };
 
-    const simulateRecording = () => {
-        setIsSpeaking(true);
-        setTimeout(() => {
+    const handleRecordingToggle = () => {
+        if (isSpeaking) {
+            // Stop recording -> Go to result
             setIsSpeaking(false);
             setMode('result');
-            playAudio(currentSentence.original); // Play answer automatically
-        }, 1500);
+            playAudio(currentSentence.original);
+        } else {
+            // Start recording
+            setIsSpeaking(true);
+        }
     };
 
     if (!currentSentence && mode !== 'summary') return <div className="p-8 text-center text-slate-500">Loading...</div>;
@@ -158,15 +161,14 @@ export const ConversationStudyPage = () => {
 
                             <div className="py-2">
                                 <button
-                                    onClick={simulateRecording}
-                                    disabled={isSpeaking}
-                                    className={`p-6 rounded-full transition-all duration-300 ${isSpeaking ? 'bg-red-500 scale-110 shadow-red-200' : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200'
+                                    onClick={handleRecordingToggle}
+                                    className={`p-6 rounded-full transition-all duration-300 ${isSpeaking ? 'bg-red-500 scale-110 shadow-red-200 animate-pulse' : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200'
                                         } text-white shadow-lg`}
                                 >
                                     <Mic className="w-8 h-8" />
                                 </button>
                                 <p className="mt-4 text-sm text-slate-500 font-medium">
-                                    {isSpeaking ? '듣고 있습니다...' : '터치하여 말하기'}
+                                    {isSpeaking ? '말하기가 끝나면 버튼을 누르세요' : '터치하여 말하기 시작'}
                                 </p>
                             </div>
 
@@ -236,8 +238,8 @@ export const ConversationStudyPage = () => {
                                         key={sentence.id}
                                         onClick={() => toggleSummaryItem(sentence.id, sentence.original)}
                                         className={`p-4 rounded-2xl border transition-all cursor-pointer ${expandedIds.has(sentence.id)
-                                                ? 'bg-indigo-50 border-indigo-200 shadow-sm'
-                                                : 'bg-white border-slate-100 hover:bg-slate-50'
+                                            ? 'bg-indigo-50 border-indigo-200 shadow-sm'
+                                            : 'bg-white border-slate-100 hover:bg-slate-50'
                                             }`}
                                     >
                                         <div className="flex items-start gap-3">
