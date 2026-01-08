@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { ArrowLeft, Mic, Volume2, RotateCcw, CheckCircle2 } from 'lucide-react';
@@ -15,14 +15,50 @@ export const ConversationStudyPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [mode, setMode] = useState<'listen' | 'speak' | 'result' | 'summary'>('listen');
     const [isSpeaking, setIsSpeaking] = useState(false);
-    // Track which items are expanded in summary mode
+    const [transcript, setTranscript] = useState('');
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+
+    const recognitionRef = useRef<any>(null);
 
     useEffect(() => {
         if (patternId) {
             setStudySet(sentences.filter(s => s.pattern === patternId));
         }
     }, [patternId, sentences]);
+
+    // Initialize Speech Recognition
+    useEffect(() => {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+            recognitionRef.current = new SpeechRecognition();
+            recognitionRef.current.continuous = true;
+            recognitionRef.current.interimResults = true;
+            recognitionRef.current.lang = 'en-US';
+
+            recognitionRef.current.onresult = (event: any) => {
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    } else {
+                        finalTranscript += event.results[i][0].transcript;
+                    }
+                }
+                setTranscript(finalTranscript);
+            };
+
+            recognitionRef.current.onerror = (event: any) => {
+                console.error('Speech recognition error', event.error);
+                setIsSpeaking(false);
+            };
+        }
+
+        return () => {
+            if (recognitionRef.current) {
+                recognitionRef.current.stop();
+            }
+        };
+    }, []);
 
     const currentSentence = studySet[currentIndex];
 
@@ -48,6 +84,7 @@ export const ConversationStudyPage = () => {
         if (currentIndex < studySet.length - 1) {
             setCurrentIndex(prev => prev + 1);
             setMode('listen');
+            setTranscript('');
         } else {
             setMode('summary');
         }
@@ -66,13 +103,26 @@ export const ConversationStudyPage = () => {
 
     const handleRecordingToggle = () => {
         if (isSpeaking) {
-            // Stop recording -> Go to result
+            // Stop recording
+            if (recognitionRef.current) recognitionRef.current.stop();
             setIsSpeaking(false);
             setMode('result');
             playAudio(currentSentence.original);
         } else {
             // Start recording
-            setIsSpeaking(true);
+            setTranscript('');
+            if (recognitionRef.current) {
+                try {
+                    recognitionRef.current.start();
+                    setIsSpeaking(true);
+                } catch (e) {
+                    console.error(e);
+                }
+            } else {
+                alert('이 브라우저는 음성 인식을 지원하지 않습니다.');
+                // Fallback for non-supported browsers
+                setIsSpeaking(true);
+            }
         }
     };
 
@@ -167,9 +217,15 @@ export const ConversationStudyPage = () => {
                                 >
                                     <Mic className="w-8 h-8" />
                                 </button>
-                                <p className="mt-4 text-sm text-slate-500 font-medium">
-                                    {isSpeaking ? '말하기가 끝나면 버튼을 누르세요' : '터치하여 말하기 시작'}
-                                </p>
+                                <div className="mt-4 min-h-[3rem] px-4">
+                                    {isSpeaking ? (
+                                        <p className="text-lg font-medium text-indigo-600 animate-pulse break-words">
+                                            {transcript || "듣고 있습니다..."}
+                                        </p>
+                                    ) : (
+                                        <p className="text-sm text-slate-500 font-medium">터치하여 말하기 시작</p>
+                                    )}
+                                </div>
                             </div>
 
                             <button
@@ -196,6 +252,12 @@ export const ConversationStudyPage = () => {
                             <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100">
                                 <h2 className="text-2xl font-bold text-slate-800 mb-2">{currentSentence.original}</h2>
                                 <p className="text-slate-500">{currentSentence.translation}</p>
+                                {transcript && (
+                                    <div className="mt-4 pt-4 border-t border-slate-200">
+                                        <p className="text-xs text-slate-400 mb-1">내가 말한 내용</p>
+                                        <p className="text-indigo-600 font-medium">{transcript}</p>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="flex justify-center gap-4">
@@ -228,7 +290,7 @@ export const ConversationStudyPage = () => {
                             key="summary"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="w-full flex-1 flex flex-col"
+                            className="w-full flex-1 flex-col"
                         >
                             <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">오늘의 학습 요약</h2>
 
