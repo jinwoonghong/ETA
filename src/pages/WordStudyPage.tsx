@@ -59,10 +59,12 @@ export const WordStudyPage = () => {
 
     const progress = ((currentIndex + 1) / studySet.length) * 100;
 
+    const progress = ((currentIndex + 1) / studySet.length) * 100;
+
     return (
-        <div className="flex flex-col h-[calc(100vh-140px)]">
+        <div className="flex flex-col h-full">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4 flex-shrink-0">
                 <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-slate-100 text-slate-400">
                     <ArrowLeft className="w-6 h-6" />
                 </button>
@@ -83,7 +85,7 @@ export const WordStudyPage = () => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 flex flex-col justify-center max-w-sm mx-auto w-full">
+            <div className="flex-1 flex flex-col justify-center items-center max-w-sm mx-auto w-full min-h-0">
                 <Flashcard
                     front={
                         <div className="space-y-4">
@@ -116,7 +118,7 @@ export const WordStudyPage = () => {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-2 gap-4 mt-8 pb-4"
+                className="grid grid-cols-2 gap-4 mt-4 pb-2 flex-shrink-0"
             >
                 <button
                     onClick={() => handleNext(false)}
