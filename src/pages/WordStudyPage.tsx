@@ -59,8 +59,6 @@ export const WordStudyPage = () => {
 
     const progress = ((currentIndex + 1) / studySet.length) * 100;
 
-    const progress = ((currentIndex + 1) / studySet.length) * 100;
-
     return (
         <div className="flex flex-col h-full">
             {/* Header */}
